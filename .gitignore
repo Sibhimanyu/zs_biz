@@ -1,0 +1,11 @@
+.DS_Store
+*.log
+node_modules/
+# tool state
+set5/.gstack/
+set5/.claude/
+set5/.impeccable/
+# source material that is not ours to publish
+set5/Zoho Style Guide/
+set5/Confirmation messages/
+set5/*.csv

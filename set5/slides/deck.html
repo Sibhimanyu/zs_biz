@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZO Hotel — Marketing Content Addressing Cancellation Reasons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FFFFFF; --surface: #FFFFFF; --muted: #F5F9FA; --secondary: #EAF5F8;
+    --ink: #041D2A; --ink-soft: #476271; --primary: #003851; --accent: #0097B1; --sky: #8ADBFA;
+    --border: #D0E1E7; --destructive: #E62C2C; --destructive-soft: #FBE5E5;
+    --radius-lg: 20px; --radius: 12px;
+    --shadow-card: 0 0 0 1px var(--border), 0 1px 3px rgba(4,29,42,0.1), 0 1px 2px -1px rgba(4,29,42,0.1);
+  }
+  *{ box-sizing: border-box; }
+  html, body{ height: 100%; }
+  body{
+    margin: 0;
+    background: var(--ink);
+    color: var(--ink);
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    overflow: hidden;
+  }
+  h1, h2, h3{
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  p{ margin: 0; }
+  ul{ margin: 0; padding: 0; list-style: none; }
+
+  .deck{ position: relative; width: 100vw; height: 100vh; background: var(--bg); }
+  .slide{
+    position: absolute; inset: 0;
+    display: none;
+    flex-direction: column;
+    padding: clamp(2rem, 5vw, 4.5rem);
+    background: var(--bg);
+  }
+  .slide.active{ display: flex; }
+  .slide-inner{ flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 1120px; margin: 0 auto; width: 100%; }
+
+  .kicker{ font-size: 0.8rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.9rem; }
+  .part-tag{
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--primary); background: var(--secondary); border: 1px solid var(--border);
+    padding: 0.35rem 0.9rem; border-radius: 999px; margin-bottom: 1.1rem;
+  }
+  .slide h2{ font-size: clamp(1.7rem, 3.8vw, 2.5rem); color: var(--ink); margin-bottom: 1rem; }
+  .slide .lede{ font-size: 1.05rem; color: var(--ink-soft); line-height: 1.6; max-width: 72ch; }
+
+  /* title */
+  #s1{ background: linear-gradient(135deg, var(--primary), #005b7a); justify-content: center; align-items: center; text-align: center; }
+  #s1 .slide-inner{ align-items: center; justify-content: center; }
+  #s1 .eyebrow{ display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 500; color: #fff; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); padding: 0.45rem 1rem; border-radius: 999px; margin: 0 auto 1.6rem; }
+  #s1 h1{ font-size: clamp(2rem, 5vw, 3.3rem); color: #fff; max-width: 22ch; margin: 0 auto 1.2rem; }
+  #s1 p{ color: rgba(255,255,255,0.85); font-size: 1.1rem; max-width: 56ch; margin: 0 auto; }
+
+  /* two-column layout for reason cards */
+  .reason-grid{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.9rem; margin-top: 1.8rem; }
+  .reason-card{ background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 1.1rem 1.2rem; }
+  .reason-card.picked{ box-shadow: 0 0 0 2px var(--accent), 0 1px 3px rgba(4,29,42,0.1); }
+  .reason-card .pct{ font-family: "Playfair Display", serif; font-weight: 700; font-size: 1.5rem; color: var(--primary); }
+  .reason-card .q{ font-size: 0.86rem; color: var(--ink); margin-top: 0.4rem; font-weight: 600; }
+  .reason-card .picked-tag{ display: inline-block; margin-top: 0.6rem; font-size: 0.68rem; font-weight: 700; color: var(--accent); background: var(--secondary); padding: 0.2rem 0.55rem; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* Part A layout: screenshot + breakdown */
+  .split{ display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 2.2rem; align-items: center; margin-top: 1.6rem; }
+  .split .shot{ border-radius: var(--radius-lg); box-shadow: var(--shadow-card); overflow: hidden; }
+  .split .shot img{ width: 100%; display: block; }
+  .breakdown{ display: flex; flex-direction: column; gap: 1.1rem; }
+  .breakdown-item .lbl{ font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-bottom: 0.3rem; }
+  .breakdown-item .val{ font-size: 1.05rem; color: var(--ink); line-height: 1.5; }
+  .breakdown-item .val.headline{ font-family: "Playfair Display", serif; font-weight: 600; font-size: 1.3rem; }
+  .breakdown-item .val strong{ color: var(--primary); }
+
+  /* Native recreation of the cancel modal's card — not a screenshot. This
+     exact section has drifted out of sync with the live modal three times
+     already in one build; a screenshot goes stale every time the modal's
+     wording changes, this doesn't. */
+  .exit-recreate{
+    background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+    padding: 1.5rem 1.7rem; max-width: 360px;
+  }
+  .exit-recreate h4{ font-family: "Playfair Display", serif; font-size: 1.15rem; font-weight: 600; color: var(--ink); margin-bottom: 0.35rem; }
+  .exit-recreate .er-dates{ font-size: 0.76rem; color: var(--ink-soft); margin-bottom: 0.2rem; }
+  .exit-recreate .er-room{ font-size: 0.76rem; color: var(--ink-soft); margin-bottom: 0.9rem; }
+  .exit-recreate .er-panel{ background: var(--secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem 0.9rem; margin-bottom: 0.9rem; }
+  .exit-recreate .er-eligible{ display: flex; align-items: center; gap: 0.35rem; font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); margin-bottom: 0.3rem; }
+  .exit-recreate .er-deadline{ font-size: 0.72rem; color: var(--ink-soft); margin-bottom: 0.6rem; }
+  .exit-recreate .er-deadline strong{ color: var(--ink); }
+  .exit-recreate .er-headline{ font-family: "Playfair Display", serif; font-size: 1.05rem; font-weight: 600; color: var(--ink); }
+  .exit-recreate .er-q{ font-size: 0.85rem; font-weight: 600; color: var(--ink); margin: 0.2rem 0 0.5rem; }
+  .exit-recreate .er-opts{ display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.7rem; }
+  .exit-recreate .er-opts span::before{ content: ""; display: inline-block; width: 16px; height: 16px; border-radius: 5px; background: var(--secondary); border: 1px solid var(--accent); margin-right: 0.55rem; vertical-align: -3px; }
+  .exit-recreate .er-opts span{ font-size: 0.78rem; font-weight: 600; padding: 0.5rem 0.7rem; border: 1px solid var(--border); border-radius: var(--radius); color: var(--ink); }
+  .exit-recreate .er-actions{ display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.4rem; }
+  .exit-recreate .er-actions .er-btn{ width: auto; padding: 0.45rem 0.9rem; font-size: 0.74rem; }
+  .exit-recreate .er-btn.keep{ background: var(--surface); color: var(--ink); border: 1px solid var(--border); }
+  .exit-recreate .er-btn.cancel{ background: var(--surface); color: var(--destructive); border: 1px solid var(--destructive); }
+  .exit-recreate .er-chips{ display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.7rem; }
+  .exit-recreate .er-chips span{ font-size: 0.64rem; font-weight: 600; padding: 0.22rem 0.55rem; border-radius: 999px; border: 1px solid var(--border); color: var(--ink); }
+  .exit-recreate .er-chips span.on{ background: var(--primary); border-color: var(--primary); color: #fff; }
+  .exit-recreate .er-alt{ font-size: 0.76rem; color: var(--ink-soft); line-height: 1.4; margin-bottom: 0.3rem; }
+  .exit-recreate .er-alt strong{ color: var(--ink); }
+  .exit-recreate .er-link{ font-size: 0.76rem; font-weight: 600; color: var(--accent); display: block; margin-bottom: 1rem; }
+  .exit-recreate .er-btn{ display: block; width: 100%; text-align: center; border-radius: 999px; padding: 0.55rem; font-size: 0.8rem; font-weight: 600; box-sizing: border-box; }
+  .exit-recreate .er-btn.destructive{ background: var(--surface); color: var(--destructive); border: 1px solid var(--destructive); margin-bottom: 0.55rem; }
+  .exit-recreate .er-btn.quiet{ color: var(--ink-soft); text-decoration: underline; font-size: 0.76rem; font-weight: 500; }
+
+  /* checklist */
+  .bullet-list{ margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.85rem; }
+  .bullet{ display: flex; gap: 0.8rem; align-items: flex-start; }
+  .bullet .ic{ width: 26px; height: 26px; border-radius: 50%; flex: none; margin-top: 0.1rem; background: var(--secondary); color: var(--accent); display: flex; align-items: center; justify-content: center; }
+  .bullet .ic svg{ width: 13px; height: 13px; }
+  .bullet .txt{ font-size: 0.98rem; color: var(--ink); line-height: 1.5; }
+  .bullet .txt strong{ color: var(--ink); }
+
+  /* Part B section slides */
+  .shot-frame{ margin-top: 1.6rem; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-card); max-height: 46vh; background: var(--muted); }
+  .shot-frame img{ width: 100%; height: auto; display: block; }
+  .rubric-tick{ margin-top: 1.3rem; display: flex; gap: 1.2rem; flex-wrap: wrap; }
+  .rubric-tick span{
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.82rem; font-weight: 600; color: var(--ink);
+    background: var(--secondary); border: 1px solid var(--border); border-radius: 999px; padding: 0.4rem 0.9rem;
+  }
+  .rubric-tick svg{ width: 13px; height: 13px; stroke: var(--accent); }
+
+  /* trust 3-up */
+  .trust-mini{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.6rem; }
+  .trust-mini .card{ background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 1.2rem 1.3rem; }
+  .trust-mini .label{ font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .trust-mini h3{ font-size: 1.05rem; margin: 0.4rem 0 0.35rem; }
+  .trust-mini p{ font-size: 0.82rem; color: var(--ink-soft); line-height: 1.4; }
+
+  /* benefit cards (native, not a screenshot — never goes stale) — matches the
+     live #why-stay section's benefit-led format: no concern quotes, no
+     rebuttal framing, just confident reasons to stay. */
+  .benefit-mini{ display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-top: 1.6rem; }
+  .benefit-mini .card{ display: flex; gap: 0.8rem; align-items: flex-start; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 1.1rem 1.2rem; }
+  .benefit-mini .ic{ width: 34px; height: 34px; border-radius: 999px; background: var(--secondary); color: var(--accent); flex: none; display: flex; align-items: center; justify-content: center; }
+  .benefit-mini .ic svg{ width: 16px; height: 16px; }
+  .benefit-mini h3{ font-size: 1rem; margin-bottom: 0.3rem; }
+  .benefit-mini p{ font-size: 0.8rem; color: var(--ink-soft); line-height: 1.45; }
+
+  /* style guide slide */
+  .style-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.6rem; }
+  .style-card{ background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 1.1rem 1.3rem; }
+  .style-card .src{ font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); margin-bottom: 0.4rem; }
+  .style-card .rule{ font-size: 0.92rem; color: var(--ink); font-weight: 600; margin-bottom: 0.3rem; }
+  .style-card .ex{ font-size: 0.82rem; color: var(--ink-soft); font-family: ui-monospace, monospace; }
+
+  /* closing */
+  #s9{ background: var(--primary); justify-content: center; align-items: center; text-align: center; }
+  #s9 .slide-inner{ align-items: center; }
+  #s9 h2{ color: #fff; }
+  #s9 p{ color: rgba(255,255,255,0.8); }
+
+
+  /* data slides */
+  .chart{ margin-top: 1rem; }
+  .map-head, .map-row{ display: grid; grid-template-columns: 34px 1.05fr 24px 1fr 1.1fr; gap: 0.8rem; align-items: center; }
+  .map-head{ margin-top: 1.2rem; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); padding: 0 1.1rem; }
+  .map{ display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; }
+  .map-row{ background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 0.8rem 1.1rem; }
+  .map-n{ width: 28px; height: 28px; border-radius: 50%; background: var(--secondary); color: var(--primary); font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; }
+  .map-data{ font-size: 0.92rem; color: var(--ink); line-height: 1.4; }
+  .map-act{ font-size: 0.88rem; color: var(--ink-soft); line-height: 1.4; }
+  .map-act b{ color: var(--ink); }
+  .map-why{ font-size: 0.88rem; font-weight: 600; color: var(--primary); line-height: 1.4; padding-left: 0.9rem; border-left: 2px solid var(--accent); }
+  .map-arrow{ color: var(--accent); font-weight: 700; text-align: center; }
+  .because{ font-size: 0.8rem; color: var(--ink-soft); line-height: 1.4; margin-top: 0.25rem; }
+  .calc{ display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 1rem; margin-top: 1.2rem; }
+  .calc > div{ background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 1.1rem 1.2rem; }
+  .calc .chosen{ box-shadow: 0 0 0 2px var(--accent), 0 1px 3px rgba(4,29,42,0.1); }
+  .calc-k{ font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .calc-big{ font-family: "Playfair Display", serif; font-weight: 700; font-size: 1.8rem; color: var(--primary); margin: 0.3rem 0 0.5rem; }
+  .calc p{ font-size: 0.88rem; color: var(--ink-soft); line-height: 1.45; }
+  .calc p b{ color: var(--ink); }
+  .calc + .takeaway{ margin-top: 1.2rem; }
+  @media (max-width: 780px){ .calc{ grid-template-columns: 1fr; } }
+  /* flow + why cards */
+  .flow{ display: grid; grid-template-columns: 1fr 34px 1.7fr; gap: 0.8rem; align-items: stretch; margin-top: 1.4rem; }
+  .flow-card{ background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); padding: 1.3rem 1.4rem; }
+  .flow-k{ display: flex; align-items: center; gap: 0.6rem; font-family: "Playfair Display", serif; font-weight: 600; font-size: 1.15rem; color: var(--ink); }
+  .flow-n{ width: 28px; height: 28px; border-radius: 50%; background: var(--primary); color: #fff; font: 700 0.85rem "Inter", sans-serif; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .flow-sub{ font-size: 0.85rem; color: var(--ink-soft); margin: 0.35rem 0 0.9rem 2.3rem; }
+  .flow-arrow{ display: flex; align-items: center; justify-content: center; color: var(--accent); }
+  .flow-arrow svg{ width: 26px; height: 26px; }
+  .pills{ display: flex; flex-direction: column; gap: 0.45rem; }
+  .pill{ display: inline-block; font-size: 0.88rem; font-weight: 600; color: var(--ink); background: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 0.45rem 0.95rem; }
+  .pill.sm{ font-size: 0.78rem; padding: 0.3rem 0.8rem; background: var(--secondary); color: var(--primary); white-space: nowrap; }
+  .ans{ display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1rem; }
+  .ans-row{ display: grid; grid-template-columns: 130px 22px 1fr; gap: 0.7rem; align-items: center; }
+  .ans-arrow{ color: var(--accent); display: inline-flex; }
+  .ans-arrow svg{ width: 18px; height: 18px; }
+  .ans-text{ font-size: 0.92rem; color: var(--ink); font-weight: 500; }
+  .flow-note{ margin-top: 1.1rem; font-size: 0.95rem; color: var(--ink-soft); background: var(--secondary); border: 1px solid var(--border); border-radius: 999px; padding: 0.6rem 1.2rem; display: inline-block; align-self: flex-start; }
+  .flow-note b{ color: var(--primary); }
+  .why-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-top: 1.4rem; }
+  .why{ display: flex; gap: 0.9rem; align-items: flex-start; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); padding: 1.2rem 1.3rem; }
+  .why-ic{ width: 42px; height: 42px; border-radius: 12px; background: var(--secondary); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .why-ic svg{ width: 22px; height: 22px; }
+  .why h3{ font-size: 1.05rem; margin-bottom: 0.25rem; }
+  .why p{ font-size: 0.88rem; color: var(--ink-soft); line-height: 1.45; }
+  @media (max-width: 780px){ .flow{ grid-template-columns: 1fr; } .flow-arrow{ transform: rotate(90deg); } .why-grid{ grid-template-columns: 1fr; } .ans-row{ grid-template-columns: 1fr; } }
+  .lost{ display: flex; align-items: baseline; gap: 0.9rem; flex-wrap: wrap; margin-top: 0.4rem; background: var(--secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.8rem 1.1rem; align-self: flex-start; }
+  .lost-k{ font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .lost-v{ font-family: "Playfair Display", serif; font-weight: 700; font-size: 1.5rem; color: var(--primary); }
+  .lost-s{ font-size: 0.85rem; color: var(--ink-soft); }
+  .calc-lead{ margin: 1rem 0 0.8rem; font-size: 0.98rem; color: var(--ink-soft); max-width: 78ch; line-height: 1.5; }
+  .rowcalc{ display: grid; grid-template-columns: 170px 1fr 190px; gap: 1rem; align-items: center; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 0.85rem 1.1rem; margin-bottom: 0.6rem; }
+  .rowcalc.chosen{ box-shadow: 0 0 0 2px var(--accent), 0 1px 3px rgba(4,29,42,0.1); }
+  .rc-tag{ font-family: "Playfair Display", serif; font-weight: 700; font-size: 1.15rem; color: var(--primary); }
+  .rc-tag span{ display: block; font: 600 0.7rem "Inter", sans-serif; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin-top: 0.1rem; }
+  .rc-dots{ display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .dot{ width: 22px; height: 22px; border-radius: 50%; background: #C5D6DD; display: inline-block; }
+  .dot.hot{ background: var(--accent); box-shadow: 0 0 0 3px rgba(0,151,177,0.25); }
+  .rc-eq{ font-size: 0.95rem; color: var(--ink-soft); text-align: right; }
+  .rc-eq b{ color: var(--ink); }
+  .calc-key{ font-size: 0.92rem; color: var(--ink-soft); margin-top: 0.4rem; line-height: 1.45; }
+  .calc-key .dot{ width: 14px; height: 14px; vertical-align: -2px; }
+  .calc-key b{ color: var(--ink); }
+  @media (max-width: 780px){ .rowcalc{ grid-template-columns: 1fr; } .rc-eq{ text-align: left; } }
+  .eq{ display: grid; grid-template-columns: 1fr 36px 1fr 36px 1fr; gap: 0.5rem; align-items: stretch; margin-top: 0.4rem; }
+  .eq-box{ background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); padding: 1rem 1.2rem; }
+  .eq-box.res{ box-shadow: 0 0 0 2px var(--accent), 0 1px 3px rgba(4,29,42,0.1); }
+  .eq-k{ font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); }
+  .eq-v{ font-family: "Playfair Display", serif; font-weight: 700; font-size: 2.2rem; color: var(--primary); margin: 0.2rem 0; }
+  .eq-s{ font-size: 0.85rem; color: var(--ink-soft); }
+  .eq-op{ display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+  .eq-dots{ margin-top: 1rem; }
+  .eq-dots p{ margin-top: 0.6rem; font-size: 0.9rem; color: var(--ink-soft); }
+  .eq-dots p .dot{ width: 14px; height: 14px; vertical-align: -2px; }
+  .eq-dots .rc-dots{ gap: 0.55rem; }
+  .eq-dots .rc-dots .dot{ width: 30px; height: 30px; }
+  .eq-dots p{ margin-bottom: 0.9rem; }
+  @media (max-width: 780px){ .eq{ grid-template-columns: 1fr; } .eq-op{ transform: rotate(90deg); } }
+  .guide{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.4rem; }
+  .g-col{ background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); padding: 1.1rem 1.3rem; }
+  .g-head{ font-family: "Playfair Display", serif; font-weight: 600; font-size: 1.15rem; color: var(--primary); margin-bottom: 0.8rem; }
+  .g-row{ display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.6rem 0; border-top: 1px solid var(--muted); }
+  .g-ic{ width: 22px; height: 22px; border-radius: 50%; background: var(--secondary); color: var(--accent); flex: none; display: inline-flex; align-items: center; justify-content: center; margin-top: 0.1rem; }
+  .g-ic svg{ width: 12px; height: 12px; }
+  .g-rule{ font-size: 0.9rem; font-weight: 600; color: var(--ink); line-height: 1.35; }
+  .g-ex{ font-size: 0.8rem; color: var(--ink-soft); line-height: 1.4; margin-top: 0.15rem; }
+  @media (max-width: 780px){ .guide{ grid-template-columns: 1fr; } }
+  .ps-label{ font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin: 1.1rem 0 0.5rem; }
+  .ps-grid{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem; }
+  .ps{ background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); overflow: hidden; }
+  .ps-q{ background: var(--muted); padding: 0.7rem 0.9rem; font: italic 500 0.92rem/1.3 "Playfair Display", serif; color: var(--primary); }
+  .ps-a{ padding: 0.7rem 0.9rem; font-size: 0.84rem; color: var(--ink); line-height: 1.4; }
+  .tr-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
+  .tr{ display: flex; gap: 0.8rem; align-items: flex-start; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 0.9rem 1rem; }
+  .tr-ic{ width: 36px; height: 36px; border-radius: 10px; background: var(--secondary); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .tr-ic svg{ width: 19px; height: 19px; }
+  .tr-k{ font-family: "Playfair Display", serif; font-weight: 600; font-size: 1.02rem; color: var(--ink); margin-bottom: 0.2rem; }
+  .tr p{ font-size: 0.82rem; color: var(--ink-soft); line-height: 1.4; margin: 0.1rem 0; }
+  @media (max-width: 780px){ .ps-grid, .tr-grid{ grid-template-columns: 1fr 1fr; } }
+  .question{ margin: 0 0 0.6rem; font-size: 1rem; color: var(--ink-soft); }
+  .question b{ color: var(--primary); }
+  .source{ margin-top: 0.8rem; font-size: 0.74rem; color: var(--ink-soft); opacity: 0.85; }
+  .takeaway{ margin-top: 0.9rem; font-size: 1rem; line-height: 1.5; color: var(--ink-soft); max-width: 80ch; }
+  .takeaway strong{ color: var(--ink); }
+  .donut-row{ display: grid; grid-template-columns: 240px 1fr; gap: 2rem; align-items: center; margin-top: 1.2rem; }
+  .donut-cards{ display: flex; flex-direction: column; gap: 0.8rem; }
+  .dcard{ display: flex; gap: 0.8rem; align-items: flex-start; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-card); padding: 0.9rem 1.1rem; }
+  .dcard .dot{ width: 14px; height: 14px; border-radius: 50%; flex: none; margin-top: 0.2rem; }
+  .dcard b{ font-size: 0.98rem; }
+  .dcard p{ font-size: 0.85rem; color: var(--ink-soft); line-height: 1.45; margin-top: 0.15rem; }
+  @media (max-width: 780px){ .donut-row{ grid-template-columns: 1fr; } }
+
+  /* nav */
+  .nav-bar{ position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.6rem; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); border-top: 1px solid var(--border); }
+  .nav-brand{ display: flex; align-items: center; gap: 0.5rem; font-family: "Playfair Display", serif; font-weight: 600; font-size: 0.92rem; color: var(--ink); }
+  .nav-brand .mark{ width: 22px; height: 22px; border-radius: 999px; background: var(--primary); display: flex; align-items: center; justify-content: center; }
+  .nav-brand .mark svg{ width: 12px; height: 12px; stroke: #fff; }
+  .nav-controls{ display: flex; align-items: center; gap: 0.9rem; }
+  .nav-btn{ display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); cursor: pointer; }
+  .nav-btn:hover:not(:disabled){ background: var(--muted); }
+  .nav-btn:disabled{ opacity: 0.35; cursor: not-allowed; }
+  .nav-btn svg{ width: 16px; height: 16px; }
+  .nav-counter{ font-size: 0.85rem; font-weight: 600; color: var(--ink-soft); font-variant-numeric: tabular-nums; min-width: 3.5rem; text-align: center; }
+  .progress{ position: fixed; top: 0; left: 0; right: 0; height: 3px; background: var(--border); z-index: 51; }
+  .progress-fill{ height: 100%; background: var(--accent); transition: width .25s ease; }
+
+  @media (max-width: 780px){
+    .split{ grid-template-columns: 1fr; }
+    .reason-grid, .style-grid, .trust-mini{ grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
+
+<div class="deck">
+
+  <!-- 1: Title -->
+  <section class="slide active" id="s1">
+    <div class="slide-inner">
+      <span class="eyebrow">Content Writing · Business</span>
+      <h1>Marketing Content Addressing Cancellation Reasons</h1>
+      <p>ZO Hotel — an exit prompt and a landing page for last-minute guests.</p>
+    </div>
+  </section>
+
+  <!-- 2: The task -->
+  <section class="slide" id="s2b">
+    <div class="slide-inner">
+      <span class="part-tag">The Data · Narrowing down</span>
+      <h2>Who we are writing for: guests who book at short notice.</h2>
+      <p class="question"><b>The question:</b> who leaves in the last 24 hours?</p>
+      <div class="chart"><svg viewBox="0 0 760 290" role="img" font-family="Inter,system-ui,sans-serif" style="width:100%;max-height:46vh"><rect x="10.0" y="10" width="330.0" height="54" rx="10" fill="#C5D6DD"/><text x="175.0" y="44" font-size="22" fill="#041D2A" text-anchor="middle" font-weight="700">20,337</text><circle cx="378" cy="37" r="13" fill="#D0E1E7"/><text x="378" y="42" font-size="13" fill="#041D2A" text-anchor="middle" font-weight="700">1</text><text x="404" y="43" font-size="15" fill="#041D2A" text-anchor="start" font-weight="600">All guests who cancelled or did not show up</text><rect x="56.2" y="78" width="237.6" height="54" rx="10" fill="#7FC6D5"/><text x="175.0" y="112" font-size="22" fill="#041D2A" text-anchor="middle" font-weight="700">1,374</text><circle cx="378" cy="105" r="13" fill="#D0E1E7"/><text x="378" y="110" font-size="13" fill="#041D2A" text-anchor="middle" font-weight="700">2</text><text x="404" y="111" font-size="15" fill="#041D2A" text-anchor="start" font-weight="500">Of these, left in the last 24 hours before arrival</text><rect x="92.5" y="146" width="165.0" height="54" rx="10" fill="#0097B1"/><text x="175.0" y="180" font-size="22" fill="#fff" text-anchor="middle" font-weight="700">609</text><circle cx="378" cy="173" r="13" fill="#D0E1E7"/><text x="378" y="178" font-size="13" fill="#041D2A" text-anchor="middle" font-weight="700">3</text><text x="404" y="179" font-size="15" fill="#041D2A" text-anchor="start" font-weight="500">Of these, had booked less than a week before arrival</text><rect x="122.19999999999999" y="214" width="105.60000000000001" height="54" rx="10" fill="#003851"/><text x="175.0" y="248" font-size="22" fill="#fff" text-anchor="middle" font-weight="700">292</text><circle cx="378" cy="241" r="13" fill="#D0E1E7"/><text x="378" y="246" font-size="13" fill="#041D2A" text-anchor="middle" font-weight="700">4</text><text x="404" y="247" font-size="15" fill="#041D2A" text-anchor="start" font-weight="600">Of these, were travelling alone</text></svg></div>
+      <p class="takeaway">Guests who <strong>book within a week</strong> of arrival are the ones most likely to drop out.</p>
+      <p class="source">Source: 20,337 cancelled or no-show bookings. Last 24 hours = arrival day or the day before.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="s2d">
+    <div class="slide-inner">
+      <span class="part-tag">The Data · How likely</span>
+      <h2>Booking close to arrival is the strongest warning sign.</h2>
+      <p class="question"><b>The question:</b> of the cancelled bookings of each type, how many were lost in the last 24 hours?</p>
+      <div class="chart"><svg viewBox="0 0 760 330" role="img" font-family="Inter,system-ui,sans-serif" style="width:100%;max-height:46vh"><line x1="250.0" y1="30" x2="250.0" y2="290" stroke="#D0E1E7" stroke-dasharray="3 4"/><text x="250.0" y="312" font-size="12" fill="#476271" text-anchor="middle" font-weight="400">0%</text><line x1="360.0" y1="30" x2="360.0" y2="290" stroke="#D0E1E7" stroke-dasharray="3 4"/><text x="360.0" y="312" font-size="12" fill="#476271" text-anchor="middle" font-weight="400">25%</text><line x1="470.0" y1="30" x2="470.0" y2="290" stroke="#D0E1E7" stroke-dasharray="3 4"/><text x="470.0" y="312" font-size="12" fill="#476271" text-anchor="middle" font-weight="400">50%</text><line x1="580.0" y1="30" x2="580.0" y2="290" stroke="#D0E1E7" stroke-dasharray="3 4"/><text x="580.0" y="312" font-size="12" fill="#476271" text-anchor="middle" font-weight="400">75%</text><line x1="690.0" y1="30" x2="690.0" y2="290" stroke="#D0E1E7" stroke-dasharray="3 4"/><text x="690.0" y="312" font-size="12" fill="#476271" text-anchor="middle" font-weight="400">100%</text><text x="250" y="16" font-size="13" fill="#476271" text-anchor="start" font-weight="400">Share of cancelled bookings lost in the last 24 hours</text><text x="20" y="60" font-size="14" fill="#041D2A" text-anchor="start" font-weight="700">Direct or corporate guest,</text><text x="20" y="78" font-size="14" fill="#041D2A" text-anchor="start" font-weight="700">booked within a week</text><rect x="250" y="50" width="357.72" height="26" rx="6" fill="#0097B1"/><text x="617.72" y="68" font-size="16" fill="#041D2A" text-anchor="start" font-weight="700">81%</text><text x="20" y="110" font-size="14" fill="#041D2A" text-anchor="start" font-weight="700">Travelling alone,</text><text x="20" y="128" font-size="14" fill="#041D2A" text-anchor="start" font-weight="700">booked within a week</text><rect x="250" y="100" width="331.31999999999994" height="26" rx="6" fill="#0097B1"/><text x="591.3199999999999" y="118" font-size="16" fill="#041D2A" text-anchor="start" font-weight="700">75%</text><text x="20" y="160" font-size="14" fill="#041D2A" text-anchor="start" font-weight="700">Anyone who booked</text><text x="20" y="178" font-size="14" fill="#041D2A" text-anchor="start" font-weight="700">within a week</text><rect x="250" y="150" width="277.64" height="26" rx="6" fill="#0097B1"/><text x="537.64" y="168" font-size="16" fill="#041D2A" text-anchor="start" font-weight="700">63%</text><text x="20" y="217" font-size="14" fill="#476271" text-anchor="start" font-weight="400">Everyone (average)</text><rect x="250" y="200" width="29.920000000000016" height="26" rx="6" fill="#C5D6DD"/><text x="289.92" y="218" font-size="16" fill="#476271" text-anchor="start" font-weight="700">7%</text><text x="20" y="260" font-size="14" fill="#476271" text-anchor="start" font-weight="400">Booked three or more months ahead</text><text x="20" y="278" font-size="14" fill="#476271" text-anchor="start" font-weight="400">(the 57.6% group)</text><rect x="250" y="250" width="9.680000000000007" height="26" rx="6" fill="#C5D6DD"/><text x="269.68" y="268" font-size="16" fill="#476271" text-anchor="start" font-weight="700">2%</text></svg></div>
+      <p class="takeaway">Booked within a week: up to <strong>81%</strong> of cancellations come in the last 24 hours. Booked three or more months ahead: <strong>2%</strong>, because they leave early.</p>
+      <p class="source">Source: 20,337 cancelled or no-show bookings. Last 24 hours = arrival day or the day before.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="s2f">
+    <div class="slide-inner">
+      <span class="part-tag">From Data To Part A</span>
+      <h2>Each finding shaped one part of the exit prompt.</h2>
+      <div class="map-head"><span></span><div>What the data shows</div><span></span><div>What prompt</div><div>How it helps</div></div>
+      <div class="map"><div class="map-row"><span class="map-n">1</span><div class="map-data">7% of cancellations happen in the last 24 hours</div><span class="map-arrow">→</span><div class="map-act"><b>Last-24-hour prompt</b>, shown only when check-in is under 24 hours away</div><div class="map-why">Effort goes where a room is hardest to resell</div></div><div class="map-row"><span class="map-n">2</span><div class="map-data">63% of short-notice cancellations come that late</div><span class="map-arrow">→</span><div class="map-act"><b>Last-24-hour prompt:</b> asks the reason, then answers it</div><div class="map-why">Fixes the actual cause, not only the date</div></div><div class="map-row"><span class="map-n">3</span><div class="map-data">99.8% had no deposit</div><span class="map-arrow">→</span><div class="map-act"><b>Last-24-hour prompt:</b> ₹350 thank-you credit after the stay</div><div class="map-why">Gives a reason to keep a booking nothing holds them to</div></div><div class="map-row"><span class="map-n">4</span><div class="map-data">Half are no-shows, who never see a prompt</div><span class="map-arrow">→</span><div class="map-act"><b>No prompt:</b> reminders before arrival</div><div class="map-why">Reaches the guests a prompt cannot</div></div><div class="map-row"><span class="map-n">5</span><div class="map-data">Booked three or more months ahead: they leave early (2% late)</div><span class="map-arrow">→</span><div class="map-act"><b>Standard prompt:</b> the original, for check-in more than 24 hours away</div><div class="map-why">Saves the new offer for guests who need it</div></div></div>
+      <p class="source">Source: 20,337 cancelled or no-show bookings. Last 24 hours = arrival day or the day before.</p>
+    </div>
+  </section>
+
+  <!-- 3: Part A — the exit prompt box -->
+  <section class="slide" id="s3">
+    <div class="slide-inner">
+      <span class="part-tag">Part A — Exit Prompt Box</span>
+      <h2>Step 1: the prompt asks the reason.</h2>
+      <p class="lede">For guests whose check-in is under 24 hours away. Nothing else is shown until they pick.</p>
+      <div class="split">
+        <div class="exit-recreate">
+          <h4>Cancel your City Comfort Room reservation?</h4>
+          <p class="er-dates">Monday, Oct. 5, 2026–Tuesday, Oct. 6, 2026</p>
+          <p class="er-room">Check-in is less than 24 hours away</p>
+          <p class="er-q">What's changed?</p>
+          <div class="er-opts"><span>I'm running late</span><span>My plans changed</span><span>I found a better price</span><span>I'm not sure about the room</span></div>
+          <div class="er-actions"><span class="er-btn keep">Keep reservation</span><span class="er-btn cancel">Cancel reservation</span></div>
+        </div>
+        <div class="breakdown">
+          <div class="breakdown-item">
+            <div class="lbl">Step 1 · Headline</div>
+            <div class="val headline">Names the booking and the moment</div>
+            <div class="because">Because: shown only inside 24 hours (finding 1).</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="lbl">Step 2 · Message</div>
+            <div class="val headline">One answer for the reason picked</div>
+            <div class="because">Because: short-notice guests, no deposit (findings 2, 3). No tabs to browse every offer.</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="lbl">Step 2 · Call to action</div>
+            <div class="val headline">Changes with the reason</div>
+            <div class="because">Confirm arrival time, Update guest name, Continue my stay or Switch room.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="s3b">
+    <div class="slide-inner">
+      <span class="part-tag">Part A — What Changed</span>
+      <h2>Ask first. Then answer that reason.</h2>
+      <div class="flow">
+        <div class="flow-card">
+          <div class="flow-k"><span class="flow-n">1</span>Pick a reason</div>
+          <p class="flow-sub">Nothing else is shown.</p>
+          <div class="pills"><span class="pill">Running late</span><span class="pill">Plans changed</span><span class="pill">Better price</span><span class="pill">Unsure of room</span></div>
+        </div>
+        <div class="flow-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="flow-card wide">
+          <div class="flow-k"><span class="flow-n">2</span>One answer for that reason</div>
+          <div class="ans"><div class="ans-row"><span class="pill sm">Running late</span><span class="ans-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="ans-text">Held until three hours after your arrival time</span></div><div class="ans-row"><span class="pill sm">Plans changed</span><span class="ans-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="ans-text">Send someone else, or switch night or room</span></div><div class="ans-row"><span class="pill sm">Better price</span><span class="ans-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="ans-text">Final price, late check-out on request</span></div><div class="ans-row"><span class="pill sm">Unsure of room</span><span class="ans-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="ans-text">Switch room, pay only the difference</span></div></div>
+        </div>
+      </div>
+      <div class="flow-note"><b>₹350</b> thank-you credit after the stay, the same wherever it appears.</div>
+    </div>
+  </section>
+
+  <section class="slide" id="s4">
+    <div class="slide-inner">
+      <span class="part-tag">Part A — Why It Works</span>
+      <h2>Four choices that keep it fair.</h2>
+      <div class="why-grid"><div class="why"><span class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span><div><h3>Pressure-free</h3><p>Skipping to cancel is always one click away.</p></div></div><div class="why"><span class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></span><div><h3>Dates are one answer of several</h3><p>Late hold, a new guest name, a different room or night.</p></div></div><div class="why"><span class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13"/></svg></span><div><h3>A thank-you, not a payment</h3><p>₹350 in credits after the stay, for guests who stay.</p></div></div><div class="why"><span class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><h3>Holds that cannot sit empty</h3><p>Time-limited and card-guaranteed, so a room is not blocked all night.</p></div></div></div>
+      <div class="flow-note">Reaches the <b>707</b> guests who press Cancel. The no-shows get reminders instead.</div>
+    </div>
+  </section>
+
+  <section class="slide" id="s4b">
+    <div class="slide-inner">
+      <span class="part-tag">Part A — The Thank-You Credit</span>
+      <h2>Why ₹350 and not more?</h2>
+      <p class="calc-lead">Suppose the offer keeps one guest who was about to leave. How many credits can that one saved night pay for?</p>
+      <div class="eq">
+        <div class="eq-box">
+          <div class="eq-k">1 · What we save</div>
+          <div class="eq-v">₹4,900</div>
+          <div class="eq-s">one night we would otherwise lose</div>
+        </div>
+        <div class="eq-op">÷</div>
+        <div class="eq-box">
+          <div class="eq-k">2 · What each credit costs</div>
+          <div class="eq-v">₹350</div>
+          <div class="eq-s">paid to every guest who takes it</div>
+        </div>
+        <div class="eq-op">=</div>
+        <div class="eq-box res">
+          <div class="eq-k">3 · Credits it pays for</div>
+          <div class="eq-v">14</div>
+          <div class="eq-s">guests who get the credit</div>
+        </div>
+      </div>
+      <div class="eq-dots">
+        <div class="rc-dots"><span class="dot hot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <p><span class="dot hot"></span> one guest who was about to leave, saved. The other 13 would have stayed anyway, and still get the credit.</p>
+      </div>
+      <p class="calc-key"><b>So ₹350 pays for itself if one in every 14 guests who get it was about to leave.</b> A ₹700 credit would need one in every seven, which is harder.</p>
+      <p class="source">Assumes a 30% chance of reselling the room, so about ₹4,900 of a ₹6,999 night is at risk. The credit is paid after check-out and valid for 90 days. We would test it on half of guests first.</p>
+    </div>
+  </section>
+
+  <section class="slide" id="s5">
+    <div class="slide-inner">
+      <span class="part-tag">Part B — Landing Page (landing.html)</span>
+      <h2>One audience: guests booking within a week of arrival.</h2>
+      <div class="shot-frame"><img src="assets/partb-landing-hero.png" alt="ZO Hotel landing page hero: Last-minute Mumbai stay? Arrive when you can. With a price quote card."></div>
+      <div class="rubric-tick">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M4 12l5 5L20 7"/></svg>Headline speaks to their situation, not "Welcome"</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round"><path d="M4 12l5 5L20 7"/></svg>Value proposition and CTA above the fold</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="s6">
+    <div class="slide-inner">
+      <span class="part-tag">Part B — Problem-Solution and Trust-Building</span>
+      <h2>Four concerns answered. Trust shown, not claimed.</h2>
+      <div class="ps-label">Problem → solution · the same four reasons as the exit prompt</div>
+      <div class="ps-grid"><div class="ps"><div class="ps-q">“I might be late.”</div><div class="ps-a">Room held three hours past your arrival time.</div></div><div class="ps"><div class="ps-q">“My plans may change.”</div><div class="ps-a">Pass the room to someone else, or switch night or room.</div></div><div class="ps"><div class="ps-q">“It may be cheaper elsewhere.”</div><div class="ps-a">Final price, nothing added at checkout.</div></div><div class="ps"><div class="ps-q">“Is this the right room?”</div><div class="ps-a">Each room says who it suits and who it doesn’t.</div></div></div>
+      <div class="ps-label">Trust-building</div>
+      <div class="tr-grid"><div class="tr"><span class="tr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></span><div><div class="tr-k">Credibility</div><p>Reviews tied to a real stay</p><p>Mixed reviews included, not just five stars</p></div></div><div class="tr"><span class="tr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span><div><div class="tr-k">Reliability</div><p>Changes confirm instantly</p><p>A message two hours before your arrival time</p></div></div><div class="tr"><span class="tr-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span><div><div class="tr-k">Transparency</div><p>Final price, no add-ons</p><p>Booking terms in four plain tiles</p></div></div></div>
+      <div class="flow-note">We also say what we <b>don’t</b> offer: card refunds inside 24 hours, sea views, the lowest price.</div>
+    </div>
+  </section>
+
+  <section class="slide" id="s8">
+    <div class="slide-inner">
+      <span class="part-tag">Style guides</span>
+      <h2>How we followed our two guides.</h2>
+      <div class="guide">
+        <div class="g-col"><div class="g-head">Confirmation messages guide</div><div class="g-row"><span class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12l5 5L20 7"/></svg></span><div><div class="g-rule">Same verb in the header, description and button</div><div class="g-ex">“Cancel your Family Room reservation?” · “If you cancel…” · “Cancel reservation”</div></div></div><div class="g-row"><span class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12l5 5L20 7"/></svg></span><div><div class="g-rule">No “Are you sure” and no exclamation points</div><div class="g-ex">The header states the action and nothing else</div></div></div><div class="g-row"><span class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12l5 5L20 7"/></svg></span><div><div class="g-rule">Specific buttons, confirm on the right</div><div class="g-ex">“Keep reservation” on the left, “Cancel reservation” on the right</div></div></div><div class="g-row"><span class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12l5 5L20 7"/></svg></span><div><div class="g-rule">Short, relevant description only</div><div class="g-ex">One answer card for the reason picked</div></div></div></div>
+        <div class="g-col"><div class="g-head">Zoho Style Guide</div><div class="g-row"><span class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12l5 5L20 7"/></svg></span><div><div class="g-rule">Numbers: spell out zero to nine, numerals from 10</div><div class="g-ex">“three hours”, “24 hours”, “one night”, “7%”</div></div></div><div class="g-row"><span class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12l5 5L20 7"/></svg></span><div><div class="g-rule">Dates and times: month, day, year; “Oct.”; “2 PM”</div><div class="g-ex">“Monday, Oct. 5, 2026” · “2 PM check-in”</div></div></div><div class="g-row"><span class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12l5 5L20 7"/></svg></span><div><div class="g-rule">Active voice, no filler words</div><div class="g-ex">“We charge one night”, “We’ll hold the room”; no “just” or “really”</div></div></div><div class="g-row"><span class="g-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M4 12l5 5L20 7"/></svg></span><div><div class="g-rule">Money: symbol first; comma in thousands</div><div class="g-ex">“₹6,999”; ranges with an en dash</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="s8b">
+    <div class="slide-inner">
+      <span class="part-tag">The Logic</span>
+      <h2>Why the page and prompt look this way.</h2>
+      <div class="trust-mini" style="grid-template-columns:repeat(2,1fr)"><div class="card"><span class="label">Who</span><h3>Guests booking within a week</h3><p>63% of their cancellations come that late.</p></div><div class="card"><span class="label">Their concerns</span><h3>Delay, plan change, price, room</h3><p>Dates are one answer of several.</p></div><div class="card"><span class="label">What we can't fix</span><h3>Late refunds, sea view, lowest price</h3><p>We say so, then offer alternatives.</p></div><div class="card"><span class="label">Why no "cancel"</span><h3>Confidence, not pleading</h3><p>The prompt handles those who still leave.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9: Closing -->
+  <section class="slide" id="s9">
+    <div class="slide-inner">
+      <h2>One exit prompt. One landing page. One audience, understood.</h2>
+      <p>Reasoned from the data, built as a working prototype, and ready to test with real guests.</p>
+    </div>
+  </section>
+
+</div>
+
+<nav class="nav-bar">
+  <div class="nav-brand">
+    <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8c1.5 1.5 3 1.5 4.5 0S9 6.5 10.5 8s3 1.5 4.5 0 3-1.5 4.5 0 3 1.5 4.5 0"/><path d="M2 14c1.5 1.5 3 1.5 4.5 0s3-1.5 4.5 0 3 1.5 4.5 0 3-1.5 4.5 0 3 1.5 4.5 0"/></svg></span>
+    ZO Hotel — Part 1 Submission
+  </div>
+  <div class="nav-controls">
+    <button class="nav-btn" id="btn-prev" aria-label="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <span class="nav-counter" id="counter">1 / 13</span>
+    <button class="nav-btn" id="btn-next" aria-label="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+  </div>
+</nav>
+
+<script>
+  var slides = Array.from(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var idx = 0;
+  var counter = document.getElementById('counter');
+  var progressFill = document.getElementById('progress-fill');
+  var btnPrev = document.getElementById('btn-prev');
+  var btnNext = document.getElementById('btn-next');
+
+  function render(){
+    slides.forEach(function(s, i){ s.classList.toggle('active', i === idx); });
+    counter.textContent = (idx + 1) + ' / ' + total;
+    progressFill.style.width = ((idx + 1) / total * 100) + '%';
+    btnPrev.disabled = idx === 0;
+    btnNext.disabled = idx === total - 1;
+  }
+  function go(delta){
+    var next = idx + delta;
+    if (next < 0 || next >= total) return;
+    idx = next;
+    render();
+  }
+  btnPrev.addEventListener('click', function(){ go(-1); });
+  btnNext.addEventListener('click', function(){ go(1); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+    if (e.key === 'Home') { idx = 0; render(); }
+    if (e.key === 'End') { idx = total - 1; render(); }
+  });
+  document.querySelector('.deck').addEventListener('click', function(e){
+    var x = e.clientX / window.innerWidth;
+    if (x < 0.15) go(-1);
+    else if (x > 0.85) go(1);
+  });
+  render();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZO Hotel Mumbai — Arrive when you can, your room is ready</title>
+<meta name="description" content="Booking a Mumbai room at short notice? Rooms near Marine Lines from ₹6,999 a night, held until three hours after your arrival time, with your stay movable to another night.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Landing page for one audience: guests booking ZO Hotel Mumbai within a week
+     of arrival (solo, work and one-night stays), from a last-minute stays link. Tokens match zo-hotel.html. */
+  :root{
+    --bg:#FFFFFF; --muted:#F5F9FA; --secondary:#EAF5F8;
+    --ink:#041D2A; --ink-soft:#476271; --primary:#003851; --accent:#0097B1; --accent-dark:#00758A; --sky:#8ADBFA;
+    --border:#D0E1E7;
+    --shadow-card:0 0 0 1px var(--border),0 1px 3px rgba(4,29,42,.1),0 1px 2px -1px rgba(4,29,42,.1);
+    --radius:12px; --radius-lg:20px; --container:1120px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Inter",ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:600;line-height:1.15;letter-spacing:-.01em;margin:0}
+  p{margin:0}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--container);margin:0 auto;padding:0 24px}
+  section{padding:80px 0}
+  .eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:10px}
+  .section-head{max-width:640px;margin-bottom:40px}
+  .section-head h2{font-size:clamp(1.8rem,3.4vw,2.5rem)}
+  .ic{width:44px;height:44px;border-radius:12px;background:var(--secondary);color:var(--accent-dark);display:flex;align-items:center;justify-content:center;flex:none}
+  .ic svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+  header.site{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(208,225,231,.6)}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 24px;max-width:var(--container);margin:0 auto}
+  .brand{display:flex;align-items:center;gap:8px;font-family:"Playfair Display",serif;font-weight:600;font-size:1.25rem}
+  .brand .mark{width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font:600 .8rem "Inter",sans-serif}
+  .bar nav{display:flex;gap:28px;font-size:.9rem;font-weight:500;color:var(--ink-soft)}
+  .bar nav a:hover{color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 .95rem "Inter",sans-serif;padding:13px 26px;border-radius:999px;border:1px solid transparent;cursor:pointer;transition:background-color .15s}
+  .btn-primary{background:var(--primary);color:#fff}
+  .btn-primary:hover{background:#00506f}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--border)}
+  .btn-ghost:hover{background:var(--muted)}
+  .btn-sm{padding:9px 20px;font-size:.88rem}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+  .arrive{background:var(--primary);color:#E3F1F6;font-size:.85rem;text-align:center;padding:9px 24px}
+  .arrive b{color:#fff}
+
+  /* hero */
+  .hero{padding:64px 0 56px;background:linear-gradient(180deg,var(--secondary) 0%,var(--bg) 100%)}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+  .hero h1{font-size:clamp(2.2rem,4.8vw,3.5rem);margin-bottom:18px}
+  .hero .lede{font-size:1.1rem;color:var(--ink-soft);max-width:480px;margin-bottom:28px}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:500;background:#fff;border:1px solid var(--border);border-radius:999px;padding:7px 14px 7px 10px}
+  .chip svg{width:16px;height:16px;stroke:var(--accent-dark);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .quote-card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:28px}
+  .quote-card h2{font-size:1.25rem;margin-bottom:4px}
+  .quote-card .sub{font-size:.85rem;color:var(--ink-soft);margin-bottom:20px}
+  .field{display:block;margin-bottom:14px}
+  .field span{display:block;font-size:.78rem;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+  .field input,.field select{width:100%;font:inherit;padding:11px 12px;border:1px solid var(--border);border-radius:var(--radius);background:#fff;color:var(--ink)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .price-line{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 16px;padding-top:14px;border-top:1px dashed var(--border)}
+  .price-line b{font:600 1.5rem "Playfair Display",serif}
+  .price-line small{color:var(--ink-soft);font-size:.8rem}
+  .quote-card .btn{width:100%}
+  .fineprint{font-size:.78rem;color:var(--ink-soft);margin-top:12px;text-align:center}
+
+  /* concern cards */
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:26px;display:flex;flex-direction:column;gap:14px}
+  .card .voice{font:italic 500 1.05rem/1.3 "Playfair Display",serif;color:var(--primary)}
+  .card h3{font:600 1rem "Inter",sans-serif;letter-spacing:0}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+  .tag{font-size:.75rem;font-weight:600;color:var(--accent-dark);background:var(--secondary);padding:4px 10px;border-radius:999px}
+
+  /* two-part cards: the worry on top, the answer below */
+  .m-card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-card);overflow:hidden;display:flex;flex-direction:column}
+  .m-ask{display:flex;gap:12px;align-items:center;padding:18px 20px;background:var(--muted)}
+  .m-ask p{font:italic 500 1rem/1.3 "Playfair Display",serif;color:var(--primary)}
+  .m-ans{padding:18px 20px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .m-ans h3{font:600 1.05rem "Inter",sans-serif;letter-spacing:0}
+  .m-ans p{font-size:.9rem;color:var(--ink-soft);line-height:1.45}
+  .m-ans .tag{align-self:flex-start;margin-top:auto}
+  /* honest: not offered -> instead */
+  .honest{background:var(--primary);color:#fff}
+  .honest .eyebrow{color:var(--sky)}
+  .pairs{display:grid;gap:14px}
+  .pair{display:grid;grid-template-columns:1fr 44px 1.3fr;align-items:center;gap:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:var(--radius-lg);padding:20px 26px}
+  .pair .no{font:600 1.1rem "Playfair Display",serif}
+  .pair .no small{display:block;font:600 .7rem "Inter",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--sky);margin-bottom:4px}
+  .pair .arrow{width:44px;height:44px;border-radius:50%;background:rgba(138,219,250,.18);display:flex;align-items:center;justify-content:center}
+  .pair .arrow svg{width:20px;height:20px;stroke:var(--sky);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .pair .yes{font-size:.98rem;color:#E3F1F6}
+  .pair .yes b{color:#fff}
+
+  /* rooms */
+  .rooms{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .room{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:26px;display:flex;flex-direction:column;gap:6px}
+  .room .rtag{align-self:flex-start;font-size:.75rem;font-weight:600;color:var(--accent-dark);background:var(--secondary);padding:4px 12px;border-radius:999px;margin-bottom:10px}
+  .room h3{font-size:1.3rem}
+  .room .price{font:600 1.5rem "Playfair Display",serif;margin-bottom:8px}
+  .room .price small{font:400 .82rem "Inter",sans-serif;color:var(--ink-soft)}
+  .room .for{font-size:.9rem;color:var(--ink-soft)}
+  .room .for b{color:var(--ink)}
+  .room .btn{margin-top:auto}.room .for:nth-of-type(2){margin-bottom:16px}
+
+  /* travellers */
+  .types{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .type{display:flex;gap:16px;align-items:flex-start;background:var(--muted);border-radius:var(--radius-lg);padding:22px}
+  .type h3{font:600 1rem "Inter",sans-serif;letter-spacing:0;margin-bottom:2px}
+  .type p{font-size:.9rem;color:var(--ink-soft);margin-bottom:8px}
+  .type a{color:var(--accent-dark);font-weight:600;font-size:.88rem;border-bottom:1px solid currentColor}
+
+  /* trust */
+  .trust{background:var(--muted)}
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:28px}
+  .pillar{display:flex;gap:16px;align-items:center;background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:22px}
+  .pillar small{display:block;font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-dark)}
+  .pillar b{font-size:1rem}
+  .reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:12px}
+  .review{margin:0;background:#fff;border-radius:var(--radius-lg);padding:22px;box-shadow:var(--shadow-card)}
+  .stars{color:#E8A317;letter-spacing:2px;font-size:.9rem;margin-bottom:8px}
+  .review blockquote{margin:0 0 12px;font-size:.95rem}
+  .review footer{font-size:.8rem;color:var(--ink-soft)}
+  .review footer b{color:var(--ink)}
+  .review-note{font-size:.76rem;color:var(--ink-soft);margin-bottom:48px}
+  .terms-cap{font:600 1.25rem "Playfair Display",serif;margin-bottom:16px}
+  .terms{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .term{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:20px;display:flex;flex-direction:column;gap:10px}
+  .term b{font-size:.95rem}
+  .term span{font-size:.88rem;color:var(--ink-soft)}
+
+  /* faq + final */
+  .faq{max-width:720px}
+  details{border-bottom:1px solid var(--border);padding:16px 0}
+  summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:1.3rem;line-height:1;color:var(--accent-dark)}
+  details[open] summary::after{content:"–"}
+  details p{margin-top:8px;color:var(--ink-soft);font-size:.95rem}
+  .final{background:var(--secondary);text-align:center}
+  .final h2{font-size:clamp(1.8rem,3.6vw,2.5rem);max-width:600px;margin:0 auto 12px}
+  .final p{color:var(--ink-soft);margin-bottom:24px}
+  footer.site{padding:32px 0;font-size:.85rem;color:var(--ink-soft);border-top:1px solid var(--border)}
+  footer.site .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+  @media (max-width:1000px){.grid4{grid-template-columns:repeat(2,1fr)}.terms{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:900px){
+    section{padding:56px 0}
+    .hero-grid,.rooms,.types,.pillars,.reviews{grid-template-columns:1fr}
+    .grid4,.terms{grid-template-columns:1fr}
+    .pair{grid-template-columns:1fr;gap:10px}.pair .arrow{transform:rotate(90deg)}
+    .bar nav{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 8c3 0 3 2 6 2s3-2 6-2 3 2 8 2M2 14c3 0 3 2 6 2s3-2 6-2 3 2 8 2"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></symbol>
+<symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h14l-3-3M20 16H6l3 3"/></symbol>
+<symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 18V6M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/></symbol>
+<symbol id="i-brief" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 13h18"/></symbol>
+<symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 3-5 6-5s6 1.5 6 5M15 15c3 0 6 1 6 4"/></symbol>
+<symbol id="i-family" viewBox="0 0 24 24"><circle cx="8" cy="7" r="3"/><circle cx="17" cy="10" r="2"/><path d="M2 21c0-4 3-6 6-6s6 2 6 6M14 21c0-2.5 1.5-4 3-4s3 1.5 3 4"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8c-3 0-4-4-1-4 2 0 1 4 1 4zm0 0c3 0 4-4 1-4-2 0-1 4-1 4z"/></symbol>
+</svg>
+<header class="site">
+  <div class="bar">
+    <a class="brand" href="landing.html"><span class="mark">ZO</span>ZO Hotel</a>
+    <nav aria-label="Page sections">
+      <a href="#plans">Your plans</a>
+      <a href="#honest">Straight answers</a>
+      <a href="#rooms">Rooms</a>
+      <a href="#terms">Terms</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="#quote">Check my dates</a>
+  </div>
+</header>
+
+<div class="arrive">From our last-minute stays link: <b>direct rate and instant confirmation</b> applied below.</div>
+
+<main>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">ZO Hotel Mumbai · Marine Lines</p>
+      <h1>Last-minute Mumbai stay? Arrive when you can.</h1>
+      <p class="lede">We'll keep your room ready, up to three hours past your arrival time. Rooms from ₹6,999 a night, one final price.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#quote">Check tonight's price</a>
+        <a class="btn btn-ghost" href="#rooms">See rooms</a>
+      </div>
+      <div class="chips">
+        <span class="chip"><svg><use href="#i-clock"/></svg>Held past your arrival time</span>
+        <span class="chip"><svg><use href="#i-people"/></svg>Swap the guest or room</span>
+        <span class="chip"><svg><use href="#i-tag"/></svg>Final price</span>
+      </div>
+    </div>
+
+    <form class="quote-card" id="quote" onsubmit="return quote(event)">
+      <h2>See your price</h2>
+      <p class="sub">ZO Hotel Mumbai · for two guests</p>
+      <div class="two">
+        <label class="field"><span>Check-in</span><input type="date" id="ci" required></label>
+        <label class="field"><span>Check-out</span><input type="date" id="co" required></label>
+      </div>
+      <label class="field"><span>Room</span>
+        <select id="rm">
+          <option value="6999|City Comfort Room">City Comfort · ₹6,999</option>
+          <option value="8499|Business Room">Business · ₹8,499</option>
+          <option value="9999|Family Room">Family · ₹9,999</option>
+        </select>
+      </label>
+      <div class="price-line"><small id="nights">Pick your dates</small><b id="total">—</b></div>
+      <button class="btn btn-primary" type="submit">Reserve my room</button>
+      <p class="fineprint">We charge nothing now. Your card guarantees the room.</p>
+    </form>
+  </div>
+</section>
+
+<section id="plans">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Short-notice trips</p>
+      <h2>Four things that often come up, and what we do.</h2>
+    </div>
+    <div class="grid4">
+      <article class="m-card">
+        <div class="m-ask"><span class="ic"><svg><use href="#i-clock"/></svg></span><p>“I might be late.”</p></div>
+        <div class="m-ans"><h3>Arrive when you can.</h3><p>We hold the room for three hours after your arrival time.</p><span class="tag">Tell us your time</span></div>
+      </article>
+      <article class="m-card">
+        <div class="m-ask"><span class="ic"><svg><use href="#i-people"/></svg></span><p>“My plans may change.”</p></div>
+        <div class="m-ans"><h3>Make it work.</h3><p>Pass the room to someone else, or switch night or room.</p><span class="tag">Guest and room swaps</span></div>
+      </article>
+      <article class="m-card">
+        <div class="m-ask"><span class="ic"><svg><use href="#i-tag"/></svg></span><p>“It may be cheaper elsewhere.”</p></div>
+        <div class="m-ans"><h3>Compare what’s included.</h3><p>Our price is final, with nothing added at checkout.</p><span class="tag">No add-ons</span></div>
+      </article>
+      <article class="m-card">
+        <div class="m-ask"><span class="ic"><svg><use href="#i-pin"/></svg></span><p>“Is this the right room?”</p></div>
+        <div class="m-ans"><h3>Pick with confidence.</h3><p>Each room says who it suits and who it doesn’t.</p><span class="tag">Switch before you arrive</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="honest" id="honest">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Straight answers</p>
+      <h2>What we don't offer, and what you get instead.</h2>
+    </div>
+    <div class="pairs">
+      <div class="pair">
+        <div class="no"><small>Not offered</small>Card refunds inside 24 hours</div>
+        <div class="arrow"><svg><use href="#i-arrow"/></svg></div>
+        <div class="yes"><b>Your stay's value is kept.</b> Swap the guest or room, or hold it as ZO Credits.</div>
+      </div>
+      <div class="pair">
+        <div class="no"><small>Not offered</small>A sea view from the room</div>
+        <div class="arrow"><svg><use href="#i-arrow"/></svg></div>
+        <div class="yes"><b>Marine Drive is close by.</b> For sea views from the room, see ZO Goa's Resort View.</div>
+      </div>
+      <div class="pair">
+        <div class="no"><small>Not offered</small>The lowest number on screen</div>
+        <div class="arrow"><svg><use href="#i-arrow"/></svg></div>
+        <div class="yes"><b>A final price you can adjust.</b> Some cheaper rates are locked once booked.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rooms">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Rooms at ZO Mumbai</p>
+      <h2>Choose by how you'll use it.</h2>
+    </div>
+    <div class="rooms">
+      <article class="room">
+        <span class="rtag">Best for solo or a couple</span>
+        <h3>City Comfort</h3>
+        <p class="price">₹6,999 <small>/ night</small></p>
+        <p class="for"><b>Right for:</b> one or two people out in the city all day.</p>
+        <p class="for"><b>Not for:</b> a group of three or more.</p>
+        <a class="btn btn-ghost" href="#quote" data-room="6999|City Comfort Room">Choose this room</a>
+      </article>
+      <article class="room">
+        <span class="rtag">Best for work trips</span>
+        <h3>Business</h3>
+        <p class="price">₹8,499 <small>/ night</small></p>
+        <p class="for"><b>Right for:</b> a proper work desk and a quiet evening.</p>
+        <p class="for"><b>Not for:</b> two guests who both want to unwind.</p>
+        <a class="btn btn-ghost" href="#quote" data-room="8499|Business Room">Choose this room</a>
+      </article>
+      <article class="room">
+        <span class="rtag">Best with family</span>
+        <h3>Family</h3>
+        <p class="price">₹9,999 <small>/ night</small></p>
+        <p class="for"><b>Right for:</b> three or four guests, extra bed on request.</p>
+        <p class="for"><b>Not for:</b> a quick solo night.</p>
+        <a class="btn btn-ghost" href="#quote" data-room="9999|Family Room">Choose this room</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Who books like this</p>
+      <h2>Same hotel, different reasons to arrive.</h2>
+    </div>
+    <div class="types">
+      <article class="type"><span class="ic"><svg><use href="#i-user"/></svg></span><div><h3>Solo traveller</h3><p>Easy arrival, a held room, one clear price.</p><a href="#quote" data-room="6999|City Comfort Room">Price a City Comfort room</a></div></article>
+      <article class="type"><span class="ic"><svg><use href="#i-brief"/></svg></span><div><h3>On a work trip</h3><p>Work desk, central, a clear invoice.</p><a href="#quote" data-room="8499|Business Room">Price a Business room</a></div></article>
+      <article class="type"><span class="ic"><svg><use href="#i-people"/></svg></span><div><h3>Couple, one night</h3><p>A quick stop with Marine Drive close by.</p><a href="#quote" data-room="6999|City Comfort Room">Price a City Comfort room</a></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="trust" id="trust">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">What we put in writing</p>
+      <h2>Reviews and terms you can check.</h2>
+    </div>
+    <div class="pillars">
+      <div class="pillar"><span class="ic"><svg><use href="#i-star"/></svg></span><div><small>Credibility</small><b>Reviews tied to a real stay</b></div></div>
+      <div class="pillar"><span class="ic"><svg><use href="#i-phone"/></svg></span><div><small>Reliability</small><b>A person answers, day or night</b></div></div>
+      <div class="pillar"><span class="ic"><svg><use href="#i-shield"/></svg></span><div><small>Transparency</small><b>The price shown is the price paid</b></div></div>
+    </div>
+
+    <div class="reviews">
+      <figure class="review"><div class="stars">★★★★★</div><blockquote>“Flight landed at 1 AM. Told the desk on the way, and my key was waiting. Small room, but exactly what I needed.”</blockquote><footer><b>Karthik R.</b> · Solo · One night · Sept.</footer></figure>
+      <figure class="review"><div class="stars">★★★★☆</div><blockquote>“Meeting ran over, so I moved my night to the next day. Two minutes, same rate.”</blockquote><footer><b>Meera K.</b> · Work trip · Jan.</footer></figure>
+      <figure class="review"><div class="stars">★★★★☆</div><blockquote>“No sea view, and they said so upfront. The desk sent us to Marine Drive at sunset. Honest and useful.”</blockquote><footer><b>Riya &amp; Dev</b> · Couple · Nov.</footer></figure>
+    </div>
+    <p class="review-note">Sample reviews for this educational project; swap in verified guest reviews before publishing.</p>
+
+    <h3 class="terms-cap" id="terms">Booking terms, at a glance</h3>
+    <div class="terms">
+      <div class="term"><span class="ic"><svg><use href="#i-clock"/></svg></span><b>Late arrival</b><span>Held three hours past your arrival time. If you don't arrive, we charge one night.</span></div>
+      <div class="term"><span class="ic"><svg><use href="#i-swap"/></svg></span><b>Changes</b><span>Guest name, room or night, subject to availability.</span></div>
+      <div class="term"><span class="ic"><svg><use href="#i-card"/></svg></span><b>Payment</b><span>Nothing now. A card on your booking guarantees the room.</span></div>
+      <div class="term"><span class="ic"><svg><use href="#i-cal"/></svg></span><b>Check-in / out</b><span>2 PM in, 11 AM out. Early or late on request.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head"><h2>Quick questions</h2></div>
+    <div class="faq">
+      <details><summary>Can I arrive late at night?</summary><p>Yes. Tell us your expected arrival time and we hold the room until three hours after it, guaranteed by a card on your booking. We message you two hours before to check you're still coming.</p></details>
+      <details><summary>What can I change after booking?</summary><p>Your arrival time, the guest name, the room type or the night, subject to availability.</p></details>
+      <details><summary>What if the night I want is full?</summary><p>We tell you straight away, then offer another room, ZO Goa, or the value of your stay as ZO Credits.</p></details>
+      <details><summary>Who do I call?</summary><p>+91 22 4000 1234 or reservations@zohotel.in, day or night.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2>Tonight or any night this week, your room waits for you.</h2>
+    <p>Reserve now. We charge nothing today, and we hold your room for your arrival.</p>
+    <a class="btn btn-primary" href="#quote">Reserve my room</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>© 2026 ZO Hotel. Fictional brand for educational use.</span>
+    <span><a href="zo-hotel.html">Full ZO Hotel site</a> · +91 22 4000 1234 · reservations@zohotel.in</span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var ci=document.getElementById('ci'), co=document.getElementById('co'), rm=document.getElementById('rm');
+    var nightsEl=document.getElementById('nights'), totalEl=document.getElementById('total');
+    function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+    var today=new Date(), tomorrow=new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+    ci.min=iso(today); co.min=iso(tomorrow);
+    ci.value=iso(today); co.value=iso(tomorrow);
+    function fmt(n){return '₹'+n.toLocaleString('en-IN')}
+    function update(){
+      var rate=parseInt(rm.value.split('|')[0],10);
+      if(!ci.value||!co.value){nightsEl.textContent='Pick your dates';totalEl.textContent='—';return}
+      var n=Math.round((new Date(co.value)-new Date(ci.value))/86400000);
+      if(n<1){nightsEl.textContent='Check-out must be after check-in';totalEl.textContent='—';return}
+      var W=['zero','one','two','three','four','five','six','seven','eight','nine'];nightsEl.textContent=fmt(rate)+' × '+(n<10?W[n]:n)+(n===1?' night':' nights');
+      totalEl.textContent=fmt(rate*n);
+    }
+    [ci,co,rm].forEach(function(e){e.addEventListener('change',update)});
+    update();
+    ci.addEventListener('change',function(){
+      if(ci.value){var d=new Date(ci.value);d.setDate(d.getDate()+1);co.min=iso(d);if(!co.value||co.value<=ci.value){co.value=iso(d)}update()}
+    });
+    document.querySelectorAll('[data-room]').forEach(function(a){
+      a.addEventListener('click',function(){rm.value=a.getAttribute('data-room');update()});
+    });
+    window.quote=function(e){
+      e.preventDefault();
+      if(new Date(co.value)<=new Date(ci.value)){co.setCustomValidity('Check-out must be after check-in.');co.reportValidity();return false}
+      co.setCustomValidity('');
+      var parts=rm.value.split('|');
+      var q='room='+encodeURIComponent(parts[1])+'&price='+encodeURIComponent(parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,','))+'&property='+encodeURIComponent('ZO Hotel Mumbai')+'&checkin='+ci.value+'&checkout='+co.value+'&guests=2';
+      window.location.href='booking-confirmation.html?'+q;
+      return false;
+    };
+  })();
+</script>
+</body>
+</html>

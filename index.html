@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZO Hotel — Cancellation Marketing</title>
+<meta name="description" content="An exit prompt and a landing page for last-minute guests of ZO Hotel Mumbai, built from cancellation data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F5F9FA;--ink:#041D2A;--soft:#476271;--primary:#003851;--accent:#0097B1;--border:#D0E1E7;--sec:#EAF5F8}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Inter",system-ui,sans-serif}
+  .wrap{max-width:860px;margin:0 auto;padding:64px 24px}
+  .eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+  h1{font:600 clamp(2rem,5vw,3rem)/1.15 "Playfair Display",serif;margin:.5rem 0 1rem}
+  p.lede{color:var(--soft);max-width:60ch;margin:0 0 2.5rem}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  a.card{display:block;background:#fff;border-radius:18px;padding:22px;text-decoration:none;color:inherit;box-shadow:0 0 0 1px var(--border),0 1px 3px rgba(4,29,42,.08);transition:box-shadow .15s}
+  a.card:hover,a.card:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+  .tag{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+  .card h2{font:600 1.3rem "Playfair Display",serif;margin:.3rem 0 .4rem}
+  .card p{margin:0;color:var(--soft);font-size:.92rem}
+  .note{margin-top:2rem;font-size:.82rem;color:var(--soft)}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="eyebrow">ZO Hotel · Marketing assignment</p>
+  <h1>An exit prompt and a landing page for last-minute guests.</h1>
+  <p class="lede">Built from the cancellation data: the costliest cancellations come in the last 24 hours, so the work targets guests who book within a week of arrival.</p>
+  <div class="grid">
+    <a class="card" href="set5/landing.html"><span class="tag">Part B</span><h2>Landing page</h2><p>The page for guests booking at short notice.</p></a>
+    <a class="card" href="set5/booking-confirmation.html"><span class="tag">Part A</span><h2>Exit prompt</h2><p>Open the booking, then choose “Cancel booking instead”.</p></a>
+    <a class="card" href="set5/slides/deck.html"><span class="tag">Reasoning</span><h2>Slide deck</h2><p>The data, the logic and the style guides we followed.</p></a>
+    <a class="card" href="set5/zo-hotel.html"><span class="tag">Context</span><h2>Full ZO Hotel site</h2><p>The wider site the landing page sits within.</p></a>
+  </div>
+  <p class="note">ZO Hotel is a fictional brand for educational use. Reviews on the landing page are samples.</p>
+</main>
+</body>
+</html>

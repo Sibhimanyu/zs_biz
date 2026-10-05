@@ -1,0 +1,161 @@
+{
+  "total_records": 20337,
+  "late_records": 1374,
+  "late_share": 6.8,
+  "late_value_share": 6.1,
+  "late_no_show": 667,
+  "late_active_cancel": 707,
+  "late_no_deposit_share": 99.8,
+  "timing": [
+    {
+      "bucket": "91+ days",
+      "records": 7226,
+      "share": 35.5
+    },
+    {
+      "bucket": "31-90 days",
+      "records": 5740,
+      "share": 28.2
+    },
+    {
+      "bucket": "8-30 days",
+      "records": 4040,
+      "share": 19.9
+    },
+    {
+      "bucket": "4-7 days",
+      "records": 1309,
+      "share": 6.4
+    },
+    {
+      "bucket": "2-3 days",
+      "records": 648,
+      "share": 3.2
+    },
+    {
+      "bucket": "1 day",
+      "records": 311,
+      "share": 1.5
+    },
+    {
+      "bucket": "Day of arrival",
+      "records": 1063,
+      "share": 5.2
+    }
+  ],
+  "funnel": [
+    {
+      "label": "All cancellation records",
+      "n": 20337
+    },
+    {
+      "label": "In the last 24 hours",
+      "n": 1374
+    },
+    {
+      "label": "...booked within 7 days of arrival",
+      "n": 609
+    },
+    {
+      "label": "...a solo traveller",
+      "n": 292
+    }
+  ],
+  "segments": [
+    {
+      "segment": "Online TA",
+      "share_all": 48.4,
+      "share_late": 45.8,
+      "late_rate": 6.4
+    },
+    {
+      "segment": "Offline TA/TO",
+      "share_all": 21.3,
+      "share_late": 19.9,
+      "late_rate": 6.3
+    },
+    {
+      "segment": "Groups",
+      "share_all": 23.9,
+      "share_late": 2.1,
+      "late_rate": 0.6
+    },
+    {
+      "segment": "Direct",
+      "share_all": 4.3,
+      "share_late": 21.3,
+      "late_rate": 33.8
+    },
+    {
+      "segment": "Corporate",
+      "share_all": 1.8,
+      "share_late": 7.7,
+      "late_rate": 28.3
+    }
+  ],
+  "groups": {
+    "Booked 91+ days ahead": {
+      "records": 11719,
+      "late": 262,
+      "late_rate": 2.2,
+      "share_of_late": 19.1
+    },
+    "Groups segment": {
+      "records": 4852,
+      "late": 29,
+      "late_rate": 0.6,
+      "share_of_late": 2.1
+    },
+    "Two adults": {
+      "records": 15912,
+      "late": 766,
+      "late_rate": 4.8,
+      "share_of_late": 55.7
+    },
+    "Arrives in February": {
+      "records": 1337,
+      "late": 266,
+      "late_rate": 19.9,
+      "share_of_late": 19.4
+    },
+    "One-night stay": {
+      "records": 2647,
+      "late": 446,
+      "late_rate": 16.8,
+      "share_of_late": 32.5
+    },
+    "Solo traveller": {
+      "records": 3364,
+      "late": 539,
+      "late_rate": 16.0,
+      "share_of_late": 39.2
+    },
+    "Booked within 7 days": {
+      "records": 965,
+      "late": 609,
+      "late_rate": 63.1,
+      "share_of_late": 44.3
+    },
+    "Solo, booked within 7 days": {
+      "records": 388,
+      "late": 292,
+      "late_rate": 75.3,
+      "share_of_late": 21.3
+    },
+    "Direct/Corporate, within 7 days": {
+      "records": 300,
+      "late": 244,
+      "late_rate": 81.3,
+      "share_of_late": 17.8
+    }
+  },
+  "short_notice_profile": {
+    "records": 609,
+    "one_night_share": 51.6,
+    "solo_share": 47.9,
+    "two_adults_share": 48.3,
+    "no_requests_share": 74.2,
+    "no_show_share": 31.7
+  },
+  "baseline_pct_91plus": 57.6
+}
