@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Booking Confirmed — ZO Hotel</title>
+<title>ZO Hotel: booking confirmed</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -194,7 +194,7 @@
   .link-accent:hover{ text-decoration: underline; }
 
   /* Last-24-hours mode: shown when check-in is under a day away. Offers are
-     tuned to that moment (running late, plan slipped by a night) and tilt the
+     tuned to that moment (trip postponed, someone else going) and tilt the
      incentive toward staying, not toward leaving. */
   .offer-compact[hidden], .offer-compact-text[hidden], .refund-choose-label[hidden], .refund-option[hidden], .late-block[hidden], .late-keep[hidden], .refund-option-bonus[hidden]{ display: none !important; }
   /* cards: each part of the prompt is its own container */
@@ -342,13 +342,13 @@
             <label>New check-in<input type="date" id="edit-checkin"></label>
             <label>New check-out<input type="date" id="edit-checkout"></label>
           </div>
-          <p class="date-edit-note">Free, instant, same room and rate — no new payment.</p>
+          <p class="date-edit-note">Moving dates is free and instant, with the same room and rate and no new payment.</p>
           <div class="date-edit-actions">
             <button class="btn" type="button" id="btn-save-dates">Save New Dates</button>
             <button class="link-cancel" type="button" id="btn-cancel-edit-dates">Never Mind</button>
           </div>
         </div>
-        <p class="date-edit-confirm" id="date-edit-confirm" hidden>✓ Dates updated — no charge, no rebooking needed.</p>
+        <p class="date-edit-confirm" id="date-edit-confirm" hidden>✓ Dates updated. There is no charge and no rebooking.</p>
       </div>
     </div>
 
@@ -368,8 +368,8 @@
          the interface doesn't fight that, it just makes the decision (and the
          one real alternative) fully informed. -->
     <div class="exit-step" data-step="offers">
-      <h3 id="modal-heading">Cancel your <strong id="modal-room-h">Family Room</strong> reservation?</h3>
-      <p class="modal-dates" id="modal-dates">Fri, Sept. 4, 2026 – Sun, Sept. 6, 2026</p>
+      <h3 id="modal-heading">Cancel reservation?</h3>
+      <p class="modal-dates" id="modal-dates">Fri, Sept. 4, 2026–Sun, Sept. 6, 2026</p>
       <p class="modal-room-line" id="modal-room">Family Room</p>
 
       <div class="refund-panel">
@@ -405,8 +405,8 @@
       </div>
 
       <div class="exit-actions">
-        <button class="btn btn-quiet" type="button" id="btn-modal-decide-later">Keep reservation</button>
-        <button class="btn btn-destructive" type="button" id="btn-cancel-confirm">Cancel reservation</button>
+        <button class="btn btn-quiet" type="button" id="btn-modal-decide-later">Keep Reservation</button>
+        <button class="btn btn-destructive" type="button" id="btn-cancel-confirm">Cancel Reservation</button>
       </div>
     </div>
 
@@ -415,19 +415,20 @@
     <!-- Last-24-hours flow, two steps: (1) pick a reason, nothing else shown;
          (2) one answer for that reason. No tabs to browse every offer. -->
     <div class="exit-step" data-step="reason" hidden>
-      <h3>Cancel your <strong class="js-room">City Comfort Room</strong> reservation?</h3>
+      <h3>Cancel reservation?</h3>
+      <p class="modal-room-line js-room">City Comfort Room</p>
       <p class="modal-dates js-dates"></p>
       <span class="late-chip">Check-in is less than 24 hours away</span>
       <p class="late-q">What's changed?</p>
       <div class="reason-list">
-        <button type="button" class="reason-opt" data-r="late"><span class="o-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ro-tx"><span class="ro-t">I'm running late</span><span class="ro-s">Delayed or still travelling</span></span></button>
-        <button type="button" class="reason-opt" data-r="plans"><span class="o-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 3-5 6-5s6 1.5 6 5M15 15c3 0 6 1 6 4"/></svg></span><span class="ro-tx"><span class="ro-t">My plans changed</span><span class="ro-s">Dates or guests changed</span></span></button>
+        <button type="button" class="reason-opt" data-r="trip"><span class="o-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></span><span class="ro-tx"><span class="ro-t">My trip was postponed or canceled</span><span class="ro-s">The meeting or journey fell through</span></span></button>
+        <button type="button" class="reason-opt" data-r="plans"><span class="o-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 3-5 6-5s6 1.5 6 5M15 15c3 0 6 1 6 4"/></svg></span><span class="ro-tx"><span class="ro-t">Someone else will stay</span><span class="ro-s">A colleague or friend is going instead</span></span></button>
         <button type="button" class="reason-opt" data-r="price"><span class="o-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1"/></svg></span><span class="ro-tx"><span class="ro-t">I found a better price</span><span class="ro-s">Another hotel costs less</span></span></button>
         <button type="button" class="reason-opt" data-r="room"><span class="o-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18V6M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/></svg></span><span class="ro-tx"><span class="ro-t">I'm not sure about the room</span><span class="ro-s">It may not suit me</span></span></button>
       </div>
       <div class="exit-actions">
-        <button class="btn btn-quiet" type="button" id="btn-reason-keep">Keep reservation</button>
-        <button class="btn btn-destructive" type="button" id="btn-skip-cancel">Cancel reservation</button>
+        <button class="btn btn-quiet" type="button" id="btn-reason-keep">Keep Reservation</button>
+        <button class="btn btn-destructive" type="button" id="btn-skip-cancel">Cancel Reservation</button>
       </div>
     </div>
 
@@ -449,8 +450,8 @@
       <div class="o-leave" id="late-leave">
         <p>If you cancel, you keep the full <span id="late-credit-amt"></span> as ZO Credits. Card refunds close 24 hours before check-in.</p>
         <div class="exit-actions">
-          <button class="btn btn-quiet" type="button" id="btn-late-keep">Keep reservation</button>
-          <button class="btn btn-destructive" type="button" id="btn-late-cancel">Cancel reservation</button>
+          <button class="btn btn-quiet" type="button" id="btn-late-keep">Keep Reservation</button>
+          <button class="btn btn-destructive" type="button" id="btn-late-cancel">Cancel Reservation</button>
         </div>
       </div>
     </div>
@@ -709,7 +710,7 @@
       if (modalDatesEl) {
         var ci = document.getElementById('checkin-v');
         var co = document.getElementById('checkout-v');
-        modalDatesEl.textContent = (ci ? ci.textContent : '') + ' – ' + (co ? co.textContent : '');
+        modalDatesEl.textContent = (ci ? ci.textContent : '') + '–' + (co ? co.textContent : '');
       }
       if (window.__applyLate) window.__applyLate();
       document.querySelectorAll('.js-dates').forEach(function(el){ el.textContent = modalDatesEl ? modalDatesEl.textContent : ''; });
@@ -728,55 +729,21 @@
     // cost more on exactly the bookings that are worth the most to keep.
     var STAY_CREDIT = 350;
     function earn(){ return '&#8377;' + STAY_CREDIT.toLocaleString('en-IN'); }
-    // Hold = stated arrival + 3 hours, confirmation message = arrival - 2 hours.
-    function shiftTime(t, hours){
-      var p = t.split(':'), m = ((parseInt(p[0], 10) + hours) * 60 + parseInt(p[1], 10) + 1440) % 1440;
-      return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
-    }
-    // Arrival slots: a 3-hour window in 30-minute steps. It opens at the standard
-    // 2:00 PM check-in on the arrival day, or at the next half hour if that time
-    // has already passed, so a guest can only claim a delay of up to 3 hours.
-    function arrivalSlots(){
-      var plan = window.__getPlan ? window.__getPlan() : { checkin: null };
-      var now = new Date();
-      var step = 30 * 60000;
-      var next = new Date(Math.ceil(now.getTime() / step) * step);
-      var start = next;
-      if (plan.checkin) {
-        var std = new Date(plan.checkin + 'T14:00:00');
-        if (!isNaN(std.getTime()) && std > next) start = std;
-      }
-      var out = [];
-      for (var k = 0; k <= 6; k++) {
-        var d = new Date(start.getTime() + k * step);
-        out.push(String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'));
-      }
-      return { slots: out, fromStd: start !== next };
-    }
-    function fmtTime(t){
-      var parts = (t || '21:00').split(':'), h = parseInt(parts[0], 10);
-      return ((h % 12) || 12) + (parts[1] === '00' ? '' : ':' + parts[1]) + ' ' + (h < 12 ? 'AM' : 'PM');
-    }
     var IC = {
-      late: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>', plans: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 3-5 6-5s6 1.5 6 5M15 15c3 0 6 1 6 4"/></svg>', price: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1"/></svg>', room: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18V6M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/></svg>'
+      trip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>', plans: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.5 3-5 6-5s6 1.5 6 5M15 15c3 0 6 1 6 4"/></svg>', price: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1"/></svg>', room: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18V6M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/></svg>'
     };
     var REASONS = {
-      late: {
-        ic: IC.late,
-        title: 'Your room will be waiting.',
-        text: function(){ return 'We\'ll hold it for three hours after your arrival time.'; },
-        action: function(){
-          var a = arrivalSlots();
-          var opts = a.slots.map(function(t){ return '<option value="' + t + '">' + fmtTime(t) + '</option>'; }).join('');
-          var help = a.fromStd ? 'Within three hours of the 2 PM check-in' : 'Within the next three hours';
-          return '<label style="display:block"><span class="late-label" style="display:block;margin:0 0 .25rem">Expected arrival · ' + help + '</span><select id="act-time">' + opts + '</select></label><button class="btn btn-primary" type="button" id="act-go" style="width:100%;justify-content:center;margin-top:.7rem">Confirm arrival time</button><p class="o-fine" style="margin-top:.6rem">We\'ll message you two hours before. Your card guarantees the room. If you don\'t arrive, we charge one night.</p>';
-        },
-        done: function(){ var t = document.getElementById('act-time').value || '21:00'; return 'All set. Your room is ready until <strong>' + fmtTime(shiftTime(t, 3)) + '</strong>. We\'ll message you at <strong>' + fmtTime(shiftTime(t, -2)) + '</strong>.'; }
+      trip: {
+        ic: IC.trip,
+        title: 'Move the stay, keep the rate.',
+        text: function(){ return 'Shift your booking to another night with the same room and rate. No change fee.'; },
+        action: function(){ return '<button class="btn btn-primary" type="button" id="act-dates" style="width:100%;justify-content:center;">Move to another night</button>'; },
+        done: function(){ return ''; }
       },
       plans: {
         ic: IC.plans,
-        title: 'Let\'s make it work.',
-        text: function(){ return 'Pass the room to someone else, or pick another night or room.'; },
+        title: 'Hand the room over.',
+        text: function(){ return 'Put the booking in their name. Same room, same dates, same rate.'; },
         action: function(){ return '<div class="row"><label class="grow"><span class="late-label" style="display:block;margin:0 0 .25rem">Who is staying instead?</span><input type="text" id="act-name" placeholder="Guest name"></label><button class="btn btn-primary grow" type="button" id="act-go">Update guest name</button></div><button type="button" class="link-accent" id="act-dates">Or move to another night &rarr;</button>'; },
         done: function(){ var n = (document.getElementById('act-name').value || '').trim() || 'Your guest'; return 'All set. The room is now in <strong>' + n.replace(/</g,'&lt;') + '</strong>\'s name.'; }
       },
@@ -811,7 +778,7 @@
       document.getElementById('late-text').innerHTML = r.text();
       document.getElementById('late-action').innerHTML = r.action();
       document.getElementById('late-earn').innerHTML = earn();
-      document.getElementById('late-bonus').hidden = !(key === 'late' || key === 'price');
+      document.getElementById('late-bonus').hidden = !(key === 'trip' || key === 'price');
       document.getElementById('late-credit-amt').innerHTML = inr(creditTotal());
       document.getElementById('late-panel').hidden = false;
       document.getElementById('late-done').hidden = true;
@@ -881,9 +848,9 @@
     // innerHTML replacement renderDone() does below.
     var REASON_CHIPS =
       '<div class="cancel-reason" id="cancel-reason">' +
-      '<p class="cancel-reason-label">Help us improve — what made you cancel? (optional)</p>' +
+      '<p class="cancel-reason-label">Help us improve: what made you cancel? (optional)</p>' +
       '<div class="exit-chips">' +
-      '<button type="button" class="chip" data-reason="plans">Plans Changed</button>' +
+      '<button type="button" class="chip" data-reason="plans">Someone Else Will Stay</button>' +
       '<button type="button" class="chip" data-reason="price">Found a Better Price</button>' +
       '<button type="button" class="chip" data-reason="room">Wasn\'t Sure About the Room</button>' +
       '<button type="button" class="chip" data-reason="other">Just Exploring</button>' +
@@ -894,12 +861,12 @@
       var wrap = chip && chip.closest('#cancel-reason');
       if (!wrap) return;
       try { localStorage.setItem('zoLastCancelReason', chip.getAttribute('data-reason')); } catch(err){}
-      wrap.innerHTML = '<p class="cancel-reason-thanks">Thanks — that helps us improve.</p>';
+      wrap.innerHTML = '<p class="cancel-reason-thanks">Thanks, that helps us improve.</p>';
     });
 
     function renderDone(kind, reasonKnown){
       // Booking is actually over now — "My Booking" in the nav should stop
-      // pointing at a cancelled reservation.
+      // pointing at a canceled reservation.
       try { localStorage.removeItem('zoBooking'); } catch(e){}
       var creditAmtEl = document.getElementById('refund-amt-credit');
       var creditAmtText = creditAmtEl ? creditAmtEl.textContent : '';
@@ -908,15 +875,15 @@
       if (kind === 'credit') {
         doneStep.innerHTML =
           '<span class="done-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></span>' +
-          '<h3>Booking cancelled.</h3>' +
-          '<p class="msg">' + creditAmtText + ' has been added to your ZO Credits — valid 12 months at any ZO Hotel property. Whenever you\'re ready, we\'ll help you find another stay.</p>' +
+          '<h3>Booking canceled.</h3>' +
+          '<p class="msg">' + creditAmtText + ' are now in your ZO Credits, valid for 12 months at any ZO Hotel property. When you\'re ready, we\'ll help you find another stay.</p>' +
           '<a class="btn btn-ghost" href="zo-hotel.html#rooms" style="width:100%; justify-content:center;">Find Another Stay</a>' +
           (reasonKnown ? '' : REASON_CHIPS);
       } else {
         doneStep.innerHTML =
           '<span class="done-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></span>' +
-          '<h3>Booking cancelled.</h3>' +
-          '<p class="msg">Your refund of ' + origAmtText + ' is on its way to your original payment method — usually within five to seven business days.</p>' +
+          '<h3>Booking canceled.</h3>' +
+          '<p class="msg">Your refund of ' + origAmtText + ' is on its way to your original payment method, usually within five to seven business days.</p>' +
           '<a class="btn btn-ghost" href="zo-hotel.html#rooms" style="width:100%; justify-content:center;">Find Another Stay</a>' +
           REASON_CHIPS;
       }
